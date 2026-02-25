@@ -330,7 +330,8 @@
     <h2>
       <i class="fas fa-map-pin"></i> Daily Book
     </h2>
-    <div class="sub-head">Daily Book · Rohit Mistry</div>
+    <!-- The sub-head will be updated with the user's name -->
+    <div class="sub-head" id="dynamicSubHead">Daily Book · Rohit Mistry</div>
 
     <!-- input row -->
     <div class="input-group">
@@ -356,6 +357,27 @@
 
   <script>
     (function() {
+      // ---------- USER NAME PROMPT & STORAGE ----------
+      const subHead = document.getElementById('dynamicSubHead'); // Get the subhead element
+      let userName = localStorage.getItem('userName');
+
+      if (!userName) {
+        // Ask for name on first visit (or if not stored)
+        let enteredName = prompt('Please enter your name:');
+        if (enteredName && enteredName.trim() !== '') {
+          userName = enteredName.trim();
+        } else {
+          userName = 'Guest'; // fallback if cancel/empty
+        }
+        localStorage.setItem('userName', userName);
+      }
+
+      // Update the subhead text (the "Rohit Mistry" part is now dynamic)
+      if (subHead) {
+        subHead.textContent = `Daily Book · ${userName}`;
+      }
+
+      // ---------- LOCATIONS FUNCTIONALITY (unchanged, but using same storage) ----------
       let locations = JSON.parse(localStorage.getItem("locations")) || [];
 
       const listEl = document.getElementById("locationList");
