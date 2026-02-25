@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<link rel="icon" type="image/png" href="Pro.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>prodev project · Daily Book</title>
+  <!-- Google Font & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #e9eff9 0%, #f2f6fc 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+      padding: 1rem;
+      margin: 0;
+    }
+
+    /* main card */
+    .manager-card {
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 32px;
+      box-shadow: 0 20px 40px -10px rgba(0,20,50,0.15),
+                 0 8px 20px rgba(0,0,0,0.05),
+                 inset 0 1px 2px rgba(255,255,255,0.6);
+      width: 100%;
+      max-width: 580px;
+      padding: 2rem 2rem 2.2rem;
+      border: 1px solid rgba(255,255,255,0.6);
+      transition: all 0.2s ease;
+      margin-bottom: 2rem; /* space for footer */
+    }
+
+    h2 {
+      font-weight: 600;
+      font-size: 1.9rem;
+      letter-spacing: -0.02em;
+      color: #1a2639;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.1rem;
+    }
+
+    h2 i {
+      color: #2b4f8e;
+      font-size: 2rem;
+      background: rgba(43,79,142,0.1);
+      padding: 0.4rem;
+      border-radius: 18px;
+    }
+
+    .sub-head {
+      font-size: 0.9rem;
+      color: #4a5b7a;
+      margin-bottom: 1.6rem;
+      border-left: 3px solid #2b4f8e;
+      padding-left: 0.75rem;
+      font-weight: 400;
+      background: rgba(43,79,142,0.02);
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* input group */
+    .input-group {
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 60px;
+      padding: 0.25rem 0.25rem 0.25rem 1.2rem;
+      box-shadow: 0 4px 12px rgba(0,20,40,0.08);
+      border: 1px solid rgba(0,0,0,0.03);
+      transition: box-shadow 0.15s, border-color 0.15s;
+      margin-bottom: 2.5rem;
+    }
+    .input-group:focus-within {
+      box-shadow: 0 6px 18px rgba(30,80,150,0.15);
+      border-color: #9bb7e0;
+    }
+
+    .input-group input {
+      flex: 1;
+      border: none;
+      padding: 0.9rem 0.5rem 0.9rem 0;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      background: transparent;
+      outline: none;
+      color: #1f2a44;
+    }
+
+    .input-group input::placeholder {
+      color: #96a9c2;
+      font-weight: 400;
+      opacity: 0.7;
+    }
+
+    .add-btn {
+      background: #1d3a5c;
+      border: none;
+      color: white;
+      font-weight: 500;
+      padding: 0.7rem 1.8rem;
+      border-radius: 40px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: 0.15s;
+      border: 1px solid rgba(255,255,255,0.2);
+      letter-spacing: 0.3px;
+      box-shadow: 0 8px 16px -6px rgba(20,50,90,0.3);
+    }
+
+    .add-btn i {
+      font-size: 1rem;
+    }
+
+    .add-btn:hover {
+      background: #254f7a;
+      transform: scale(1.02);
+      box-shadow: 0 12px 20px -8px #1d3a5c80;
+    }
+
+    .add-btn:active {
+      background: #122b44;
+      transform: scale(0.98);
+    }
+
+    /* locations list */
+    .locations-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.8rem;
+      padding: 0 0.2rem;
+    }
+
+    .locations-header span {
+      font-weight: 500;
+      color: #2b3f64;
+      font-size: 0.95rem;
+      background: rgba(43,63,100,0.06);
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+    }
+
+    .location-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .list-item {
+      background: white;
+      border-radius: 24px;
+      padding: 0.5rem 0.5rem 0.5rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02), 0 6px 12px -8px rgba(30,50,80,0.1);
+      border: 1px solid rgba(255,255,255,0.8);
+      backdrop-filter: blur(2px);
+      transition: all 0.2s;
+    }
+
+    .list-item:hover {
+      border-color: #b7d0f0;
+      box-shadow: 0 8px 18px -8px #20407030;
+      transform: translateY(-1px);
+    }
+
+    .location-name {
+      font-weight: 500;
+      color: #1f2e4a;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      word-break: break-word;
+      padding-right: 0.8rem;
+    }
+
+    .location-name i {
+      color: #e85d3f;
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .edit-btn, .delete-btn {
+      border: none;
+      background: transparent;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem 0.5rem 0.9rem;
+      border-radius: 40px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: 0.15s;
+      border: 1px solid transparent;
+    }
+
+    .edit-btn {
+      background: #f8e3ce;
+      color: #9b5f26;
+    }
+    .edit-btn i {
+      color: #c07d3a;
+      font-size: 0.85rem;
+    }
+    .edit-btn:hover {
+      background: #f5d7b8;
+      border-color: #e4b483;
+      color: #784a1d;
+    }
+
+    .delete-btn {
+      background: #ffe8e8;
+      color: #b13e3e;
+    }
+    .delete-btn i {
+      color: #c25353;
+    }
+    .delete-btn:hover {
+      background: #ffd7d7;
+      border-color: #f3b5b5;
+      color: #9f2d2d;
+    }
+
+    .empty-message {
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      background: rgba(255,255,255,0.5);
+      border-radius: 32px;
+      color: #4e6586;
+      font-size: 0.95rem;
+      border: 2px dashed #c8d8f0;
+      margin-top: 0.5rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .empty-message i {
+      font-size: 2.5rem;
+      opacity: 0.5;
+      margin-bottom: 0.5rem;
+      color: #6f8ab1;
+    }
+
+    .empty-message p {
+      font-weight: 400;
+    }
+
+    /* ------------- SEPARATE FOOTER SECTION ------------- */
+    .site-footer {
+      width: 100%;
+      max-width: 580px;
+      text-align: center;
+      padding: 1rem 0.5rem;
+      font-size: 1rem;
+      color: #3a4e6b;
+      border-top: 2px solid rgba(255,215,100,0.5);
+      background: rgba(255,255,255,0.3);
+      backdrop-filter: blur(4px);
+      border-radius: 60px;
+      box-shadow: 0 8px 18px -6px rgba(0,20,40,0.1);
+      margin-top: 0.5rem;
+    }
+
+    .site-footer a {
+      font-weight: 700;
+      color: #f5b342;  /* warm yellow */
+      text-decoration: none;
+      transition: color 0.2s;
+      margin-left: 0.3rem;
+    }
+
+    .site-footer a:hover {
+      color: #ffaa2a;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .site-footer i {
+      color: #f5b342;
+      margin-right: 6px;
+      font-size: 0.9rem;
+    }
+
+    /* responsive touch */
+    @media (max-width: 450px) {
+      .manager-card { padding: 1.5rem; }
+      .input-group { flex-wrap: wrap; background: transparent; box-shadow: none; padding: 0; gap: 0.5rem; }
+      .input-group input { background: white; border-radius: 50px; padding: 0.9rem 1.2rem; width: 100%; }
+      .add-btn { width: 100%; justify-content: center; }
+      .list-item { flex-wrap: wrap; gap: 0.5rem; }
+      .location-name { width: 100%; }
+      .action-buttons { margin-left: auto; }
+      .site-footer { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- main application card -->
+  <div class="manager-card">
+    <h2>
+      <i class="fas fa-map-pin"></i> Daily Book
+    </h2>
+    <div class="sub-head">Daily Book · Rohit Mistry</div>
+
+    <!-- input row -->
+    <div class="input-group">
+      <input type="text" id="locationInput" placeholder="e.g., Central Park, New York" autocomplete="off">
+      <button class="add-btn" onclick="addLocation()">
+        <i class="fas fa-plus-circle"></i> Add
+      </button>
+    </div>
+
+    <!-- counter & list -->
+    <div class="locations-header">
+      <span><i class="fas fa-list-ul" style="margin-right: 6px;"></i>Your Daily Entry</span>
+      <span id="counterBadge" style="background: #e2eaf8;">0</span>
+    </div>
+
+    <ul class="location-list" id="locationList"></ul>
+  </div>
+
+  <!-- separate footer section (exactly as requested) -->
+  <footer class="site-footer">
+    <i class="fas fa-code"></i> Design by <a href="https://www.prodeveloping.online" target="_blank" rel="noopener noreferrer">Pro Developing</a>
+  </footer>
+
+  <script>
+    (function() {
+      let locations = JSON.parse(localStorage.getItem("locations")) || [];
+
+      const listEl = document.getElementById("locationList");
+      const inputEl = document.getElementById("locationInput");
+      const counterSpan = document.getElementById("counterBadge");
+
+      function saveToLocal() {
+        localStorage.setItem("locations", JSON.stringify(locations));
+      }
+
+      function updateCounter() {
+        if (counterSpan) {
+          counterSpan.textContent = locations.length;
+        }
+      }
+
+      function displayLocations() {
+        if (!listEl) return;
+        if (locations.length === 0) {
+          listEl.innerHTML = `
+            <li class="empty-message">
+              <i class="fas fa-map-marked-alt"></i>
+              <p>No Daily Book yet<br><span style="font-size:0.85rem; opacity:0.7;">add one using the field above</span></p>
+            </li>
+          `;
+          updateCounter();
+          return;
+        }
+
+        let html = '';
+        locations.forEach((loc, index) => {
+          const safeLoc = String(loc).replace(/[&<>"]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            if (m === '"') return '&quot;';
+            return m;
+          });
+
+          html += `
+            <li class="list-item">
+              <span class="location-name"><i class="fas fa-location-dot"></i> ${safeLoc}</span>
+              <div class="action-buttons">
+                <button class="edit-btn" onclick="editLocation(${index})">
+                  <i class="fas fa-pencil-alt"></i> Edit
+                </button>
+                <button class="delete-btn" onclick="deleteLocation(${index})">
+                  <i class="fas fa-trash-alt"></i> Delete
+                </button>
+              </div>
+            </li>
+          `;
+        });
+        listEl.innerHTML = html;
+        updateCounter();
+      }
+
+      window.addLocation = function() {
+        if (!inputEl) return;
+        const val = inputEl.value.trim();
+        if (val === '') {
+          inputEl.style.transition = '0.1s';
+          inputEl.style.backgroundColor = '#fff0f0';
+          setTimeout(() => { inputEl.style.backgroundColor = ''; }, 150);
+          return;
+        }
+        locations.push(val);
+        saveToLocal();
+        displayLocations();
+        inputEl.value = '';
+        inputEl.focus();
+      };
+
+      window.editLocation = function(index) {
+        const current = locations[index];
+        const newValue = prompt('Edit location:', current);
+        if (newValue !== null && newValue.trim() !== '') {
+          locations[index] = newValue.trim();
+          saveToLocal();
+          displayLocations();
+        } else if (newValue !== null && newValue.trim() === '') {
+          alert('Location cannot be empty.');
+        }
+      };
+
+      window.deleteLocation = function(index) {
+        if (confirm('Remove this location?')) {
+          locations.splice(index, 1);
+          saveToLocal();
+          displayLocations();
+        }
+      };
+
+      displayLocations();
+
+      if (inputEl) {
+        inputEl.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            addLocation();
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
